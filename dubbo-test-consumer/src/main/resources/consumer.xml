@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://code.alibabatech.com/schema/dubbo
+               http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--当前项目在整个分布式架构里面的唯一名称，计算依赖关系的标签 ，
+    如果server 和 consumer 部署在同一台机器上只需要写一个-->
+    <!--    <dubbo:application name="consumer" owner="mqf"/>-->
+    <!--dubbo这个服务所要暴露的服务地址所对应的注册中心-->
+    <!--点对点的方式-->
+    <!--    <dubbo:registry address="N/A"/>-->
+    <dubbo:registry address="zookeeper://localhost:2181" check="false"/>
+    <!--生成一个远程服务的调用代理-->
+    <!--点对点方式-->
+    <!--    <dubbo:reference id="providerServiceDD" interface="com.mqf.provider.server.ProviderService"-->
+    <!--                     url="dubbo://10.0.71.36:20880/com.mqf.provider.server.ProviderService"/>-->
+    <!--使用zookeeper 作为注册中心不需要 dubbo 服务端提供的 url ，只需要直接引用服务端提供的接口即可-->
+    <dubbo:reference id="providerServiceDD" interface="com.mqf.provider.server.ProviderService" check="false" cluster="failover" retries="2"/>
+    <!--    dubbo://10.0.71.36:20880/com.mqf.provider.server.ProviderService?
+    anyhost=true&application=provider&bean.name=com.mqf.provider.server.ProviderService
+    &bind.ip=10.0.71.36&bind.port=20880&dubbo=2.0.2&generic=false
+    &interface=com.mqf.provider.server.ProviderService
+    &methods=SayHello&owner=sihai&pid=78934&qos.accept.foreign.ip=false
+    &qos.enable=true&qos.port=55555&side=provider
+    &timestamp=1596803632628, dubbo version: 2.6.6, current host: 10.0.71.36-->
+</beans>
